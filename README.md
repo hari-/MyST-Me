@@ -11,8 +11,8 @@ It is assumed that you have php installed on your computer and that you have a w
 Enter the MySQL credentials into the first few form elements and click the "Get Tables" button. The "Database Tables" form element will be populated with the names of all the tables.  Select the tables for which the creation of a Sencha Touch model is desired (use Ctrl to select multiple tables) and click on the ">" to move the desired tables to the "Database Tables Select to Export" list.  The ">>" button can also be used to move all the tables, while the "<" and "<<" buttons can be used to remove tables from the export list.  Enter the directory to which the model files should be exported (the default is the current directory). Select the desired options, and how to indent (tabs or n number of spaces). Enter the name of the Sencha Touch project and click "Export Mdodels".
 
 ###CAVEATS
-No warranty is expresed or implied.  This is minimally tested and bugs may very well be found by you.  It's probably a good idea to manually review all of the output.  If you find bugs please let me know (or fix them and let me know the fix;-).  Also, note that if the "hasMany" option is chosen it is worth reviewing the "hasMany" relationships defined to see if some should be manually changed to "hasOne".
-This program transmits the database password in plain text so it's not recommended that you run it over a network.
+- No warranty is expresed or implied.  This is minimally tested and bugs may very well be found by you.  It's probably a good idea to manually review all of the output.  If you find bugs please let me know (or fix them and let me know the fix;-).  Also, note that if the "hasMany" option is chosen it is worth reviewing the "hasMany" relationships defined to see if some should be manually changed to "hasOne".
+- This program transmits the database password in plain text so it's not recommended that you run it over a network.
 
 ###IDEAS FOR IMPROVEMENTS/UPGRADES
 - Somebody please style this.
