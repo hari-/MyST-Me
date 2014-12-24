@@ -32,7 +32,8 @@ I developed this as two seperate files, MyST_Me.html and MyST_Me.php, then merge
 - Paste in the contents of MyST_Me.html
 - Add the following line of code:
 - <?php endif; ?>
-- Paste in the contentes of MyST_Me.php
+- Paste in the contents of MyST_Me.php
 - Change the following line of code to the line below it.
 - var mystmeUrl = "MyST_Me.php";
 - var mystmeUrl = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
+- Eliminate the second license notice from the pasted contents of MyST_Me.php.
