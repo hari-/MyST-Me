@@ -12,6 +12,7 @@ Enter the MySQL credentials into the first few form elements and click the "Get 
 
 ###CAVEATS
 No warranty is expresed or implied.  This is minimally tested and bugs may very well be found by you.  It's probably a good idea to manually review all of the output.  If you find bugs please let me know (or fix them and let me know the fix;-).  Also, note that if the "hasMany" option is chosen it is worth reviewing the "hasMany" relationships defined to see if some should be manually changed to "hasOne".
+This program transmits the database password in plain text so it's not recommended that you run it over a network.
 
 ###IDEAS FOR IMPROVEMENTS/UPGRADES
 - Somebody please style this.
@@ -19,3 +20,4 @@ No warranty is expresed or implied.  This is minimally tested and bugs may very 
 - Change the lists so that they can resize dynamically (I'm not sure how best to do this).
 - Add an option to not create a model for join tables. A checkbox reading "Ignore tables composed of only foreign key attriubtes"
 - Perhaps create an interactive version that cycles through each table and allows the user to select options for each table
+- Add a validate export directory button or event action.
