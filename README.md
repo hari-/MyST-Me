@@ -21,3 +21,5 @@ Enter the MySQL credentials into the first few form elements and click the "Get 
 - Add an option to not create a model for join tables. A checkbox reading "Ignore tables composed of only foreign key attriubtes"
 - Perhaps create an interactive version that cycles through each table and allows the user to select options for each table
 - Add a validate export directory button or event action.
+- Standardize error message formats.
+- The final output could be enhanced, maybe it could have syntax highlighting added, or more information could be added.
