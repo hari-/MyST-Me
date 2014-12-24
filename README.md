@@ -23,3 +23,16 @@ Enter the MySQL credentials into the first few form elements and click the "Get 
 - Add a validate export directory button or event action.
 - Standardize error message formats.
 - The final output could be enhanced, maybe it could have syntax highlighting added, or more information could be added.
+
+=======
+###Development Notes
+I developed this as two seperate files, MyST_Me.html and MyST_Me.php, then merged them into one, MyST_Me_sf.php, for convenience.  I envision that the development will continue to use these two files so here's a few instructions on how to create one file from the two.
+- Create an empty file MyST_Me_sf.php add the following line of code
+- <?php if (empty($_POST)): ?>
+- Paste in the contents of MyST_Me.html
+- Add the following line of code:
+- <?php endif; ?>
+- Paste in the contentes of MyST_Me.php
+- Change the following line of code to the line below it.
+- var mystmeUrl = "MyST_Me.php";
+- var mystmeUrl = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>";
