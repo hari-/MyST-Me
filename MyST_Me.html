@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<!-- 
+Copyright (c) 2014, Hari S. Khalsa
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of MyST Me nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>MyST Me</title>
+</head>
+<body onload="setUp()">
+<form id="MyST_MeForm" class="model-exporter-form" method="post">
+<fieldset>
+
+<legend>MyST ME - MySQL database to Sencha Touch Model Exporter</legend>
+
+  <label class="input-label" for="host">Database host</label>
+  <input id="host" name="host" type="text" value="127.0.0.1" class="text-input" required=""><br>
+
+  <label class="input-label" for="userName">Database Username</label>
+  <input id="userName" name="userName" type="text" value="root" class="text-input" required=""><br>
+
+  <label class="input-label" for="dbPassword">Database Password</label>
+  <input id="dbPassword" name="dbPassword" type="password" value="" class="text-input"><br>
+
+  <label class="input-label" for="databaseName">Database Instance</label>
+  <input id="databaseName" name="databaseName" type="text" value="mydb" class="text-input" required=""><br>
+
+  <button type="button" id="getTablesButton" name="getTablesButton" onclick="getTables()">Get Tables</button><br><br>
+  
+  <!-- User selects DB tables to work with -->
+  <div id="dbTableSelction">
+    <table cellspacing="0" id="dbTableSelectionTable">
+    <tr>
+    <th>Database Tables</th>
+    <th> </th>
+    <th>Database Tables Selected to Export</th>
+    </tr>
+    <tr>
+      <td>
+        <div>
+            <select id="dbTableValuesLeft" size="7" multiple style="width:200px">
+            </select>
+        </div>
+      </td>
+      <td>
+        <div>
+            <input type="button" id="allRightDbTable" value="&gt;&gt;" /><br>
+            <input type="button" id="btnRightDbTable" value="&gt;" /><br>
+            <input type="button" id="allLeftDbTable" value="&lt;&lt;" /><br>
+            <input type="button" id="btnLeftDbTable" value="&lt;" />
+        </div>
+      </td>
+      <td>
+       <div>
+           <select name="dbTableValuesRight[]" id="dbTableValuesRight" size="7" multiple style="width:200px">
+           </select>
+       </div>
+      </td>
+    </tr>
+    </table><br>
+  </div>
+
+  <div id="inputExportDirectory">
+  </div>
+  
+  
+  <!-- <div id="exportOptions" style="display: none;"> -->
+  <div id="exportOptions">
+  	<br><button type="button" id="selectAllOptions" name="selectAllOptions" onclick="selectAllNoOptions(this)">Select All Options</button><br>
+  	<table cellspacing="0" id="exportOptionsTable" border="1">
+  	  <tr>
+  	  	<td>
+          <input id="presenceValidation" name="presenceValidation" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="presenceValidation">Add presence validation for non-null attributes.</label>
+  	  	</td>
+  	  	<td>
+          <input id="inclusionValidation" name="inclusionValidation" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="inclusionValidation">Add inclusion validation for enum attributes.</label>
+  	  	</td>
+  	  	<td>
+          <input id="maxLengthValidation" name="maxLengthValidation" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="maxLengthValidation">Add maximum length validation for varchar attributes.</label>
+  	  	</td>
+  	  </tr>
+  	  <tr>
+  	  	<td>
+          <input id="formatValidation" name="formatValidation" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="formatValidation">Add format validation for varchar attributes.</label><br>
+  	  	  <label class="input-label" for="regExString">Format Validation Regular expression:</label>
+          <input id="regExString" name="regExString" type="text" value="^[A-Za-z0-9 _]*$" class="text-input" disabled>
+  	  	</td>
+  	  	<td>
+          <input id="addIdentifier" name="addIdentifier" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="addIdentifier">Add uuid identifier strategy.</label>
+  	  	</td>
+  	  	<td>
+          <input id="addDefaultValues" name="addDefaultValues" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="addDefaultValues">Add default values for attributes.</label>
+  	  	</td>
+  	  </tr>
+      <tr>
+  	  	<td colspan="3">
+          <input id="hasMany" name="hasMany" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="hasMany">Add hasMany configuration for attributes that come from foreign key relationships that are not part of the primary key.</label>
+  	  	</td>
+  	  </tr>
+  	  <tr>
+  	  	<td colspan="2">
+          <input id="belongsTo" name="belongsTo" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="belongsTo">Add belongsTo configuration for tables related to only one other table.</label><br>
+  	  	</td>
+  	  	<td>
+          <input id="idProperty" name="idProperty" type="checkbox" class="checkbox-input">
+  	  	  <label class="input-label" for="idProperty">Add idProperty for primary key.</label>
+  	  	</td>
+  	  </tr>
+    </table>
+  </div>
+  <br>
+  <table cellspacing="0" id="spaceOptionsTable">
+  	<tr>
+  	  <td>
+  	  	<input type="radio" name="radios" id="useTab" value="useTab" class="radio-input">
+  	  	<label class="input-label" for="useTab">Use tabs at begining of line.</label>
+  	  	<input type="radio" name="radios" id="useSpaces" value="useSpaces" checked="checked" class="radio-input">
+  	  	<label class="input-label" for="useSpaces">Use sapces at begining of line.</label>
+  	  </td>
+  	</tr>
+  	<tr>
+  	  <td>
+  	  	<label class="input-label" for="numberOfSpaces">Number of spaces to use:</label>
+        <input id="numberOfSpaces" name="numberOfSpaces" type="text" value="2" class="text-input">
+  	  </td>
+  	</tr>
+  </table>
+  
+  <br><label class="input-label" for="projectName" >Enter the project name:</label>
+  <!-- <input id="projectName" type="text" class="text-input" required=""> -->
+  <!-- CHANGE ME LATER -->
+  <input id="projectName" type="text" name="projectName" class="text-input" required="" value="BVA">
+  <!-- <br><button id="exportModel" name="exportModel">Export Models</button><br> -->
+  <br><input id="submit" type="submit" value="Export Models" onclick="submitTables()"><br>
+
+</fieldset>
+</form>
+</body>
+<script type="text/javascript">
+var mystmeUrl = "MyST_Me.php";
+function setUp() {
+  document.getElementById("MyST_MeForm").action = mystmeUrl;
+  setUpExportDirectoryInput();
+  setUpArrowButtons();
+  setUpRadioButtons();
+  document.getElementById("formatValidation").addEventListener("click", 
+   function(){document.getElementById("regExString").disabled = !document.getElementById("regExString").disabled;});
+  getExportDirectory();
+  //DEBUG keep form from submitting to debug javascript
+  //document.getElementById('MyST_MeForm').onsubmit = function() {return false;}; 
+}
+
+function selectAllNoOptions(selectOptionsButton) {
+
+  var checked = false;
+  if (selectOptionsButton.innerHTML === "Select All Options") {
+    selectOptionsButton.innerHTML = "Select No Options";
+    checked = true;
+  }
+  else {
+    selectOptionsButton.innerHTML = "Select All Options";
+  }
+	  
+  document.getElementById("presenceValidation").checked = checked; 
+  document.getElementById("inclusionValidation").checked = checked;
+  document.getElementById("maxLengthValidation").checked = checked;
+  document.getElementById("formatValidation").checked = checked;
+  document.getElementById("addIdentifier").checked = checked;
+  document.getElementById("addDefaultValues").checked = checked;
+  document.getElementById("hasMany").checked = checked;
+  document.getElementById("belongsTo").checked = checked;
+  document.getElementById("idProperty").checked = checked;
+   
+  document.getElementById("regExString").disabled = !checked;
+}
+
+function setUpRadioButtons() {
+  document.getElementById("useTab").addEventListener("click", 
+   function(){document.getElementById("numberOfSpaces").disabled = true;});
+  document.getElementById("useSpaces").addEventListener("click", 
+   function(){document.getElementById("numberOfSpaces").disabled = false;});
+   
+}
+
+function setUpExportDirectoryInput() {
+	var inputExportDirectory = "";
+	//I thought I could offer Chrome users a shortcut to select a folder
+	//through a dialog but only the relative paths from the directory
+	//chosen are available, so I'm just going to comment out the functionality.
+	//if (isChrome()){
+	if (false){
+	  inputExportDirectory = "<label class=\"input-label\" for=\"exportDirectoryInput\">Select directory for exported files.</label>\n";
+      //example of use found here: http://jsfiddle.net/addyo/Ha979/
+	  inputExportDirectory += "<input id=\"exportDirectoryInput\" name=\"exportDirectoryInput\" type=\"file\" webkitdirectory directory/>";
+	}
+	else
+	{
+	  inputExportDirectory = "<label class=\"input-label\" for=\"exportDirectoryInput\">Enter directory for exported files.</label>\n";
+	  inputExportDirectory += "<input id=\"exportDirectoryInput\" name=\"exportDirectoryInput\" type=\"text\" value=\".\"  required=\"\" class=\"text-input\"/>";
+	  inputExportDirectory += "<br><label class=\"input-label\" for=\"exportDirectoryInput\">If the directory is set to a value of \".\", the code will look for a \"model\" or \"app/model\" directory underneath current directory</label>\n";
+	  
+	}
+	document.getElementById("inputExportDirectory").innerHTML=inputExportDirectory;
+}
+
+function setUpArrowButtons() {
+  document.getElementById("btnRightDbTable").addEventListener("click", 
+   function(){moveSelectedDbTables(true,false);});
+  
+  document.getElementById("btnLeftDbTable").addEventListener("click", 
+   function(){moveSelectedDbTables(false,false);});
+   
+  document.getElementById("allRightDbTable").addEventListener("click", 
+   function(){moveSelectedDbTables(true,true);});
+  
+  document.getElementById("allLeftDbTable").addEventListener("click", 
+   function(){moveSelectedDbTables(false,true);});
+}
+
+function moveSelectedDbTables(right,all)
+{
+  var fromList, toList;
+  if (right) {
+    fromList = document.getElementById("dbTableValuesLeft");
+    toList = document.getElementById("dbTableValuesRight");
+  } else {
+    fromList = document.getElementById("dbTableValuesRight");
+    toList = document.getElementById("dbTableValuesLeft");
+  }
+  
+  var currentOption;
+  //it's important to loop through the options backwards
+  for (i = fromList.options.length-1; i >= 0; i--) {
+  	currentOption = fromList.options.item(i);
+  	if (all || currentOption.selected) {
+  	  toList.options.add(currentOption,0);
+  	  //console.log(currentOption);
+  	  //fromList.remove(i); //you don't need to remove it from one when moving to the other 
+  	}
+  }
+}
+
+function isChrome() {
+  return navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+}
+
+function getExportDirectory() {
+  var exportDirectoryInput = document.getElementById("exportDirectoryInput").value;  
+  var variables = "action=getExportDirectory&exportDirectoryInput=" + exportDirectoryInput;
+  
+  makeAjaxRequest(getExportDirectoryCallback, mystmeUrl, variables, getExportDirectoryErrorCallback);
+}
+
+function getTables() {
+  var host = document.getElementById("host").value;
+  var databaseName = document.getElementById("databaseName").value;
+  var userName = document.getElementById("userName").value;
+  var dbPassword = document.getElementById("dbPassword").value;
+  //console.log("host: " + host + " databaseName: " + databaseName + " userName: " +  userName + " dbPassword: " +  dbPassword);
+  
+  var variables = "action=getTables&host=" + host + "&databaseName=" + databaseName + "&userName=" +  userName + "&dbPassword=" +  dbPassword;
+  
+  if (!host){
+  	alert("The host needs to be defined in order to retrieve the tables.");
+  	return;
+  }
+  if (!databaseName){
+  	alert("The database needs to be defined in order to retrieve the tables.");
+  	return;
+  }
+  if (!userName){
+  	alert("The user name needs to be defined in order to retrieve the tables.");
+  	return;
+  }
+  makeAjaxRequest(getTablesCallback, mystmeUrl, variables, getTablesErrorCallback);
+  document.getElementById("getTablesButton").style.visibility="hidden";
+}
+
+function makeAjaxRequest(callback, url, variables, errorCallback) {
+  var xmlHttp;
+  if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlHttp=new XMLHttpRequest();
+  } else { // code for IE6, IE5
+    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlHttp.onreadystatechange=function() {
+    if (xmlHttp.readyState !=4)
+      return;
+    if (xmlHttp.status==200) {
+      callback(xmlHttp.responseText);
+      return;
+    } 
+    if (xmlHttp.status==500) {
+      errorCallback(xmlHttp.responseText);
+      return;
+    }
+  };
+  
+  xmlHttp.open("POST",url,true);
+  xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xmlHttp.send(variables);  
+}
+
+function getTablesErrorCallback(data) {
+  var parsedData = JSON.parse(data);
+  
+  alert(parsedData["message"]);
+  document.getElementById("getTablesButton").style.visibility="visible";
+}
+
+function getTablesCallback(data) {
+  //console.log(data);
+  var parsedData = JSON.parse(data);
+  //console.log(parsedData);
+	
+  var dbTableValuesLeft = document.getElementById('dbTableValuesLeft');
+  for(var i = 0; i < parsedData.length; i++) {
+    var option = document.createElement('option');
+    option.innerHTML = parsedData[i];
+    option.value = parsedData[i];
+    dbTableValuesLeft.appendChild(option);
+  }
+}
+
+function getExportDirectoryErrorCallback(data) {
+  var parsedData = JSON.parse(data);
+  alert(parsedData["message"]);
+}
+
+function getExportDirectoryCallback(data) {
+  var parsedData = JSON.parse(data);
+  document.getElementById("exportDirectoryInput").value = parsedData;
+}
+
+function submitTables(){
+  //in order to submit all the chosen tables they need to be selected
+  var selectedTablesList = document.getElementById("dbTableValuesRight");
+  for (i = 0; i < selectedTablesList.options.length; i++)
+  	selectedTablesList.options.item(i).selected = true;
+}
+
+</script>
+</html>
