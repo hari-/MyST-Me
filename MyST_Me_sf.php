@@ -588,8 +588,8 @@ function getHasMany($attributes, $space){
   	//skip attributes that define foreign key relationships
   	if(!$attributes[$i]->isForeignKey())
 	  continue;
-	if ($attributes[$i]->isPrimaryKey()) 
-  	  continue;
+	//if ($attributes[$i]->isPrimaryKey()) 
+  	//  continue;
     $fkTable = ucfirst(strtolower($attributes[$i]->getforeignKeyTable()));
     $stringData = $stringData.$space.$space."hasMany:{ model: '$fkTable', name: '".
      $attributes[$i]->getName()."'},\n";
